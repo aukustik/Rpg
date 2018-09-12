@@ -12,7 +12,7 @@ class MainChar:
             'Gloves':None,
             'Weapon':None
         }
-    def equip_item_helm(self, item):
+    def equip_item(self, item):
         if (item.type == 'Helmet'):
             if(self.equipment['Helmet'] == None):
                 self.max_health += item.bonus_health
@@ -22,13 +22,13 @@ class MainChar:
                 result = input()
                 if(result=='yes'):
                     self.unequip_item('Helmet')
-                    self.equip_item_helm(item)
+                    self.equip_item(item)
                 else:
                     return
                 
     def unequip_item(self, type):
-        self.max_health -= int(self.equipment[type].bonus_health)
         if (self.equipment[type] != None):
+            self.max_health -= int(self.equipment[type].bonus_health)
             self.equipment[type] = None
  
 
@@ -43,8 +43,16 @@ class MainChar:
     def print_stats(self):
         print('HERO',self.name,'STATS')
         print('Heath Points:', self.health, '/',self.max_health)
-
-
+        if (self.equipment['Helmet'] != None):
+            print('Helmet:', self.equipment['Helmet'].item_id)
+        if (self.equipment['Body'] != None):
+            print('Body Armour:', self.equipment['Body'].item_id)
+        if (self.equipment['Boots'] != None):
+            print('Boots:', self.equipment['Boots'].item_id)
+        if (self.equipment['Gloves'] != None):
+            print('Gloves:', self.equipment['Gloves'].item_id)
+        if (self.equipment['Weapon'] != None):
+            print('Weapon', self.equipment['Weapon'].item_id)
 class Item:
     def __init__(self, name, size):
         self.item_id = name
