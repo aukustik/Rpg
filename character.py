@@ -14,10 +14,19 @@ class MainChar:
         }
     def equip_item_helm(self, item):
         if (item.type == 'Helmet'):
-            self.max_health += item.bonus_health
-            self.equipment['Helmet']['name'] = item.item_id
-            self.equipment['Helmet']['hp'] = item.bonus_health
-    
+            if(self.equipment['Helmet']['name'] == None):
+                self.max_health += item.bonus_health
+                self.equipment['Helmet']['name'] = item.item_id
+                self.equipment['Helmet']['hp'] = item.bonus_health
+            else:
+                print('Unequip old Helmet and equip new?(yes/no):')
+                result = input()
+                if(result=='yes'):
+                    self.unequip_item('Helmet')
+                    self.equip_item_helm(item)
+                else:
+                    return
+                
     def unequip_item(self, type):
         self.max_health -= int(self.equipment[type]['hp'])
         if (self.equipment[type] != None):
