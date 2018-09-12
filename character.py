@@ -1,3 +1,5 @@
+import time
+
 class MainChar:
     def __init__(self, nameChar):
         self.health = 100
@@ -57,6 +59,16 @@ class MainChar:
             print('Gloves:', self.equipment['Gloves'].item_id)
         if (self.equipment['Weapon'] != None):
             print('Weapon', self.equipment['Weapon'].item_id)
+    
+    def say_any(self, text):
+        message = text
+        print(self.name, 'says: ', end='')
+        for i in message:
+            print(i, end='')
+            time.sleep(0.03)
+        time.sleep(0.5)
+        print('\n')
+
 class Item:
     def __init__(self, name, size):
         self.item_id = name
