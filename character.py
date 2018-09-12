@@ -6,16 +6,23 @@ class MainChar:
         self.exp = 0
         self.backpack = Storage(20)
         self.equipment = {
-            'Helmet':None,
-            'Body':None,
-            'Boots':None,
-            'Gloves':None,
-            'Weapon':None
+            'Helmet':{'name':None,'hp': None},
+            'Body':{},
+            'Boots':{},
+            'Gloves':{},
+            'Weapon':{}
         }
     def equip_item_helm(self, item):
         if (item.type == 'Helmet'):
             self.max_health += item.bonus_health
-            self.equipment['Helmet'] = item.itemId
+            self.equipment['Helmet']['name'] = item.itemId
+            self.equipment['Helmet']['hp'] = item.bonus_health
+    
+    def unequip_item(self, type):
+        self.max_health -= int(self.equipment[type]['hp'])
+        if (self.equipment[type] != None):
+            self.equipment[type]['name'] = None
+            self.equipment[type]['hp'] = None
 
     def take_damage(self, damage):
         self.health = self.health - damage
