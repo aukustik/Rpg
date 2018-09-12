@@ -2,6 +2,7 @@ class MainChar:
     def __init__(self, nameChar):
         self.health = 100
         self.max_health = 100
+        self.max_stamina = 40
         self.name = nameChar
         self.exp = 0
         self.backpack = Storage(20)
@@ -13,22 +14,27 @@ class MainChar:
             'Weapon':None
         }
     def equip_item(self, item):
-        if (item.type == 'Helmet'):
-            if(self.equipment['Helmet'] == None):
-                self.max_health += item.bonus_health
-                self.equipment['Helmet'] = item
+            if(self.equipment[item.type] == None):
+                self.equipment[item.type] = item
+                if (item.type == 'Helmet'):
+                    self.max_health += item.bonus_health
+                if (item.type == 'Body'):
+                    self.max_stamina += item.bonus_stamina
             else:
-                print('Unequip old Helmet and equip',item.item_id ,'?(yes/no):')
+                print('Unequip old', item.type,'and equip',item.item_id ,'?(yes/no):')
                 result = input()
                 if(result=='yes'):
-                    self.unequip_item('Helmet')
+                    self.unequip_item(item.type)
                     self.equip_item(item)
                 else:
                     return
-                
     def unequip_item(self, type):
-        if (self.equipment[type] != None):
+        if (type == 'Helmet'):
             self.max_health -= int(self.equipment[type].bonus_health)
+        if (type == 'Body'):
+            self.max_stamina -= int(self.equipment[type].bonus_stamina)
+        
+        if (self.equipment[type] != None):
             self.equipment[type] = None
  
 
@@ -67,6 +73,11 @@ class HealingPotion(Item):
 class Helmets(Item):
     type = 'Helmet'
     bonus_health = 20
+
+class BodyArmour(Item):
+    type = 'Body'
+    bonus_stamina = 5
+    
 
 
 class Storage:
