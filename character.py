@@ -15,7 +15,7 @@ class MainChar:
     def equip_item_helm(self, item):
         if (item.type == 'Helmet'):
             self.max_health += item.bonus_health
-            self.equipment['Helmet']['name'] = item.itemId
+            self.equipment['Helmet']['name'] = item.item_id
             self.equipment['Helmet']['hp'] = item.bonus_health
     
     def unequip_item(self, type):
@@ -33,13 +33,13 @@ class MainChar:
         print(self.name,'healed',heal, 'hp')
 
     def print_stats(self):
-        print('HERO STATS')
+        print('HERO',self.name,'STATS')
         print('Heath Points:', self.health, '/',self.max_health)
 
 
 class Item:
     def __init__(self, name, size):
-        self.itemId = name
+        self.item_id = name
         self.itemSize = size
         self.quantity = 1
 
@@ -68,5 +68,5 @@ class Storage:
         self.storage.remove(item)
 
     def use_item(self, item):
-        print('Using item', item.itemId)
+        print('Using item', item.item_id)
         self.storage.remove(item)
