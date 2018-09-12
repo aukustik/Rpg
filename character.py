@@ -29,14 +29,12 @@ class MainChar:
                 else:
                     return
     def unequip_item(self, type):
-        if (type == 'Helmet'):
-            self.max_health -= int(self.equipment[type].bonus_health)
-        if (type == 'Body'):
-            self.max_stamina -= int(self.equipment[type].bonus_stamina)
-        
         if (self.equipment[type] != None):
+            if (type == 'Helmet'):
+                self.max_health -= int(self.equipment[type].bonus_health)
+            if (type == 'Body'):
+                self.max_stamina -= int(self.equipment[type].bonus_stamina)
             self.equipment[type] = None
- 
 
     def take_damage(self, damage):
         self.health = self.health - damage
