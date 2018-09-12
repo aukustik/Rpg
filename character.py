@@ -31,7 +31,7 @@ class Storage:
     
     def add_item(self, item):
         if(len(self.storage) + item.itemSize > self.size):
-            print('not enough space')
+            print('Not enough space')
         else:
             self.storage.append(item)
         
