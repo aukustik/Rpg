@@ -1,5 +1,5 @@
 from character import *
-
+import random
 class LevelTurtorial:
     def __init__(self, character):
         self.complete = False
@@ -7,6 +7,7 @@ class LevelTurtorial:
         self.char_pos = [5,3]
     def map_creation(self):
         size = 6
+        boxes = 1
         self.map_main = [['X'] * size for i in range(size)]
         self.map_main[self.char_pos[0]][self.char_pos[1]] = '0'
         return self.map_main
