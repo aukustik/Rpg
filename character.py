@@ -82,13 +82,31 @@ class HealingPotion(Item):
 
 class Helmets(Item):
     type = 'Helmet'
-    bonus_health = 20
+    bonus_health = 0
+    
+    def set_health(self, value):
+        self.bonus_health = value
+
+    def get_health(self):
+        return self.bonus_health
+
+    def info(self):
+        self.message = self.item_id + ' (' + 'Bonus HP:' + str(self.bonus_health) + ')'
+        return self.message
 
 class BodyArmour(Item):
     type = 'Body'
-    bonus_stamina = 5
+    bonus_stamina = 0
     
-
+    def set_stamina(self, value):
+        self.bonus_stamina = value
+    
+    def get_stamina(self):
+        return self.bonus_stamina
+    
+    def info(self):
+        self.message = self.item_id + ' (' + 'Bonus Stamina:' + str(self.bonus_stamina) + ')'
+        return self.message
 
 class Storage:
     def __init__(self, maxSize):
