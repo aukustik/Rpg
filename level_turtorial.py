@@ -7,6 +7,7 @@ class LevelTurtorial:
         self.char_pos = [5,3]
         self.size = 7
         self.on_box = False
+    
     def map_creation(self):
 
         self.map_main = [['X'] * self.size for i in range(self.size)]
@@ -30,6 +31,20 @@ class LevelTurtorial:
             self.chest()
         self.map_main[self.box_coords[0]][self.box_coords[1]] = 'C'
     
+    def in_box(self, character):
+        while(True):
+            self.show_chest()
+            print('write take/exit')
+            chose = input()
+            if(chose == 'take'):
+                print('what?')
+                chose_2 = input()
+                for i in self.treasure_box.storage:
+                    if (i.item_id == chose_2):
+                        character.backpack.add_item(i)
+                        self.treasure_box.remove_item(i)
+            if (chose == 'exit'):
+                return False
     def show_chest(self):
         for i in self.treasure_box.storage:
             print(i.info())
@@ -78,5 +93,10 @@ class LevelTurtorial:
             if (direction == 'exit'):
                 return False
             if (direction == 'open chest'):
-                self.show_chest()
+                if(self.on_box == True):
+                    self.in_box(character)
+                else:
+                    print('No chest here.')
+            if (direction == 'backpack'):
+                character.show_backpack()
         

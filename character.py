@@ -68,7 +68,24 @@ class MainChar:
             time.sleep(0.03)
         time.sleep(0.5)
         print('\n')
-
+    
+    def show_backpack(self):
+        print('Backpack:')
+        for i in self.backpack.storage:
+            print(i.info())
+            while(True):
+                print('equip item/exit')
+                chose = input()
+                if (chose == 'equip item'):
+                    print('what?')
+                    chose_2 = input()
+                    for i in self.backpack.storage:
+                        if (chose_2 == i.item_id):
+                            self.equip_item(i)
+                            self.backpack.remove_item(i)
+                
+                if (chose == 'exit'):
+                    return False
 class Item:
     def __init__(self, name, size):
         self.item_id = name
@@ -91,7 +108,7 @@ class Helmets(Item):
         return self.bonus_health
 
     def info(self):
-        self.message = self.item_id + ' (' + 'Bonus HP:' + str(self.bonus_health) + ')'
+        self.message = self.type + ': ' + self.item_id + ' (' + 'Bonus HP:' + str(self.bonus_health) + ')'
         return self.message
 
 class BodyArmour(Item):
@@ -105,7 +122,7 @@ class BodyArmour(Item):
         return self.bonus_stamina
     
     def info(self):
-        self.message = self.item_id + ' (' + 'Bonus Stamina:' + str(self.bonus_stamina) + ')'
+        self.message = self.type + ': ' + self.item_id + ' (' + 'Bonus Stamina:' + str(self.bonus_stamina) + ')'
         return self.message
 
 class Storage:
