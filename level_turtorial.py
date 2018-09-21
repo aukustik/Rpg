@@ -1,15 +1,14 @@
 from character import *
 import random
 class LevelTurtorial:
-    def __init__(self, character):
+    def __init__(self):
         self.complete = False
         self.turtorial_npc = MainChar('Ben')
         self.char_pos = [5,3]
         self.size = 7
         self.on_box = False
-    
-    def map_creation(self):
 
+    def map_creation(self):
         self.map_main = [['X'] * self.size for i in range(self.size)]
         self.map_main[self.char_pos[0]][self.char_pos[1]] = '0'
         return self.map_main
@@ -17,6 +16,7 @@ class LevelTurtorial:
     def map_output(self, map):
         for row in map:
             print(' '.join([str(elem) for elem in row]))
+    
 
     def chest(self):
         self.treasure_box = Storage(20)
@@ -41,6 +41,7 @@ class LevelTurtorial:
                 chose_2 = input()
                 for i in self.treasure_box.storage:
                     if (i.item_id == chose_2):
+                        print(i)
                         character.backpack.add_item(i)
                         self.treasure_box.remove_item(i)
             if (chose == 'exit'):
@@ -51,6 +52,15 @@ class LevelTurtorial:
 
     def turtorial(self, character):
         map_turt = self.map_creation()
+        self.actions = {'up':MoveUp(self),
+                        'down':MoveDown(self),
+                        'left':MoveLeft(self),
+                        'right':MoveRight(self),
+                        'equip':Equip(self, character),
+                        'open chest':OpenChest(self, character),
+                        'map':MapPrint(self),
+                        'exit':'',
+                        'backpack':BackpackOutput(self, character)}
         self.chest()
         self.turtorial_npc.say_any('Hello my blinded friend!')
         self.turtorial_npc.say_any('I will help u, in this dark...')
@@ -66,37 +76,80 @@ class LevelTurtorial:
             else:
                 self.on_box = False
             direction = input()
-            if (direction == 'up'):
-                self.map_main[self.char_pos[0]][self.char_pos[1]] = '|'
-                self.char_pos[0] -= 1
-                self.map_main[self.char_pos[0]][self.char_pos[1]] = '0'
-                self.map_output(map_turt)
-            if (direction == 'down'):
-                self.map_main[self.char_pos[0]][self.char_pos[1]] = '|'
-                self.char_pos[0] += 1
-                self.map_main[self.char_pos[0]][self.char_pos[1]] = '0'
-                self.map_output(map_turt)
-            if (direction == 'left'):
-                self.map_main[self.char_pos[0]][self.char_pos[1]] = '-'
-                self.char_pos[1] -= 1
-                self.map_main[self.char_pos[0]][self.char_pos[1]] = '0'
-                self.map_output(map_turt)
-            if (direction == 'right'):
-                self.map_main[self.char_pos[0]][self.char_pos[1]] = '-'
-                self.char_pos[1] += 1
-                self.map_main[self.char_pos[0]][self.char_pos[1]] = '0'
-                self.map_output(map_turt)
-            if (direction == 'equip'):
-                character.print_stats()
-            if (direction == 'map'):
-                self.map_output(map_turt)
-            if (direction == 'exit'):
-                return False
-            if (direction == 'open chest'):
-                if(self.on_box == True):
-                    self.in_box(character)
-                else:
-                    print('No chest here.')
-            if (direction == 'backpack'):
-                character.show_backpack()
-        
+            action = self.actions[direction]
+            action.run()
+            self.map_output(map_turt)
+
+class Command:
+    def run(self):
+        raise NotImplementedError
+
+class MoveUp(Command):
+    def __init__(self, level):
+        self.level = level
+    
+    def run(self):
+        self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = '|'
+        self.level.char_pos[0] -= 1
+        self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = '0'
+
+class MoveDown(Command):
+    def __init__(self, level):
+        self.level = level
+    
+    def run(self):
+        self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = '|'
+        self.level.char_pos[0] += 1
+        self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = '0'
+
+class MoveLeft(Command):
+    def __init__(self, level):
+        self.level = level
+    
+    def run(self):
+        self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = '-'
+        self.level.char_pos[1] -= 1
+        self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = '0'
+
+class MoveRight(Command):
+    def __init__(self, level):
+        self.level = level
+    
+    def run(self):
+        self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = '-'
+        self.level.char_pos[1] += 1
+        self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = '0'
+
+class Equip(Command):
+    def __init__(self, level, character):
+        self.character = character
+        self.level = level
+
+    def run(self):
+        self.character.show_backpack()
+
+class OpenChest(Command):
+    def __init__(self, level, character):
+        self.character = character
+        self.level = level
+    
+    def run(self):
+        if (self.level.on_box == True):
+            self.level.in_box(self.character)
+        else:
+            print('Nope.')
+
+class MapPrint(Command):
+    def __init__(self, level):
+        self.level = level
+    
+    def run(self):
+        self.level.map_output(self.level.map_turt)
+
+class BackpackOutput(Command):
+    def __init__(self, level, character):
+        self.character = character
+        self.level = level
+    
+    def run(self):
+        self.character.show_backpack()

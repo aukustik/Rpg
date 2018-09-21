@@ -60,6 +60,9 @@ class MainChar:
         if (self.equipment['Weapon'] != None):
             print('Weapon', self.equipment['Weapon'].item_id)
     
+    def health_checking(self):
+        return self.max_health + sum([item.bonus_health for item in self.equipment])
+        
     def say_any(self, text):
         message = text
         print(self.name, 'says: ', end='')
@@ -73,24 +76,46 @@ class MainChar:
         print('Backpack:')
         for i in self.backpack.storage:
             print(i.info())
-            while(True):
-                print('equip item/exit')
-                chose = input()
-                if (chose == 'equip item'):
-                    print('what?')
-                    chose_2 = input()
-                    for i in self.backpack.storage:
-                        if (chose_2 == i.item_id):
-                            self.equip_item(i)
-                            self.backpack.remove_item(i)
+        
+        while(True):
+            print('equip item/exit')
+            chose = input()
+            if (chose == 'equip item'):
+                print('what?')
+                chose_2 = input()
+                for i in self.backpack.storage:
+                    if (chose_2 == i.item_id):
+                        self.equip_item(i)
+                        self.backpack.remove_item(i)
                 
-                if (chose == 'exit'):
-                    return False
+            if (chose == 'exit'):
+                return False
+
+
+    
+    def move_down(self, char_pos, map_main):
+        map_main[char_pos[0]][char_pos[1]] = '|'
+        char_pos[0] += 1
+        map_main[char_pos[0]][char_pos[1]] = '0'
+
+    def move_left(self, char_pos, map_main):
+        map_main[char_pos[0]][char_pos[1]] = '-'
+        char_pos[1] -= 1
+        map_main[char_pos[0]][char_pos[1]] = '0'
+
+    def move_right(self, char_pos, map_main):
+        map_main[char_pos[0]][char_pos[1]] = '-'
+        char_pos[1] += 1
+        map_main[char_pos[0]][char_pos[1]] = '0'
+
 class Item:
     def __init__(self, name, size):
         self.item_id = name
         self.itemSize = size
         self.quantity = 1
+    
+    def __str__(self):
+        return self.item_id
 
 class HealingPotion(Item):
     type = 'Potion'
