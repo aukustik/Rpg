@@ -126,6 +126,13 @@ class Helmets(Item):
         self.message = self.type + ': ' + self.item_id + ' (' + 'Bonus HP:' + str(self.bonus_health) + ')'
         return self.message
 
+class Keys(Item):
+    type = 'Key'
+
+    def info(self):
+        self.message = 'Item:' + self.type
+        return self.message
+
 class BodyArmour(Item):
     type = 'Body'
     bonus_stamina = 0

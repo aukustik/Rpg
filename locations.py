@@ -72,6 +72,34 @@ class Box(Location):
             print(i.info())
         print('_____________________')
 
+class KeyBox(Location):
+    def __str__(self):
+        return 'K'
+    
+    def event(self, character):
+        print('You found CHEST!')
+        while(True):
+            self.show_chest()
+            print('write take/exit')
+            chose = input()
+            if(chose == 'take'):
+                print('take what?')
+                self.show_chest()
+                chose_2 = input()
+                for i in self.level.key_chest.storage:
+                    if (i.item_id == chose_2):
+                        print(i)
+                        character.backpack.add_item(i)
+                        self.level.key_chest.remove_item(i)
+            if (chose == 'exit'):
+                return False
+    
+    def show_chest(self):
+        print('In Chest:')
+        for i in self.level.key_chest.storage:
+            print(i.info())
+        print('_____________________')
+
 class CharPosition(Location):
     def __str__(self):
         return '0'

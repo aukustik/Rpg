@@ -31,7 +31,6 @@ class LevelTurtorial:
         self.box_coords = [self.size//2,self.size//2]
         if(self.box_coords == self.char_pos):
             self.chest()
-        self
         self.map_main[self.box_coords[0]][self.box_coords[1]] = Box(self)
         self.map_main[self.box_coords[0]-1][self.box_coords[1]] = Door(self)
         self.map_main[self.box_coords[0]][self.box_coords[1]-1] = Door(self)
@@ -41,6 +40,14 @@ class LevelTurtorial:
         self.map_main[self.box_coords[0]+1][self.box_coords[1]+1] = Wall(self)
         self.map_main[self.box_coords[0]-1][self.box_coords[1]+1] = Wall(self)
         self.map_main[self.box_coords[0]+1][self.box_coords[1]-1] = Wall(self)
+    
+    def key_box(self):
+        self.key_chest = Storage(1)
+        item_key = Keys('Key', 1)
+        self.key_chest.add_item(item_key)
+        self.key_coords = [0, self.size - 1]
+        self.map_main[self.key_coords[0]][self.key_coords[1]] = KeyBox(self)
+        print(self.key_chest.storage[0])
 
     def turtorial(self, character):
         map_turt = self.map_creation()
@@ -54,6 +61,7 @@ class LevelTurtorial:
                         'exit':'',
                         'backpack':BackpackOutput(self, character)}
         self.chest()
+        self.key_box()
         # self.turtorial_npc.say_any('Hello my blinded friend!')
         # self.turtorial_npc.say_any('I will help u, in this dark...')
         # character.say_any('Who are u???')
