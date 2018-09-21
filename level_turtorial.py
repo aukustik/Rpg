@@ -47,6 +47,9 @@ class LevelTurtorial:
         self.key_chest.add_item(item_key)
         self.key_coords = [0, self.size - 1]
         self.map_main[self.key_coords[0]][self.key_coords[1]] = KeyBox(self)
+        self.map_main[self.key_coords[0]][self.key_coords[1] - 1] = Wall(self)
+        self.map_main[self.key_coords[0] + 1][self.key_coords[1] - 1] = Wall(self)
+        self.map_main[self.key_coords[0] + 1][self.key_coords[1]] = Enemy(self, 'Ogre, The Defender of Key')
         print(self.key_chest.storage[0])
 
     def turtorial(self, character):
@@ -58,7 +61,7 @@ class LevelTurtorial:
                         'equip':Equip(self, character),
                         'open chest':OpenChest(self, character),
                         'map':MapPrint(self),
-                        'exit':'',
+                        'exit':Exit(),
                         'backpack':BackpackOutput(self, character)}
         self.chest()
         self.key_box()

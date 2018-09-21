@@ -105,3 +105,7 @@ class BackpackOutput(Command):
     def run(self):
         self.character.show_backpack()
 
+class Exit(Command):
+    
+    def run(self):
+        raise SystemExit(1)

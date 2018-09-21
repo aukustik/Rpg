@@ -109,4 +109,54 @@ class CharPosition(Location):
     
     def event(self, character):
         character.say_any('So scary...')
+
+class Enemy(Location):
+
+    def __str__(self):
+        return 'E'
+
+    def __init__(self, level, name):
+        self.wall = False
+        self.name = name
+    
+    def event(self, character):
+        self.character = character
+        self.enemy = MainChar(self.name)
+        self.enemy_damage = [5,10,1]
+        self.enemy.say_any('Stop! Or i will kill you!')
+        self.fight()
+
+    def fight(self):
+        while(True):
+            if (self.enemy.health <= 0):
+                print(self.enemy.name,'is Dead')
+                return False
+            if (self.character.health <= 0):
+                print('You Died...')
+                break
+            print(self.character.name, 'attacks: Hand/Leg/Boulder/Weapon')
+            attack_type = input()
+            my_damage = 0
+            if(attack_type == 'Hand'):
+                my_damage = random.randrange(0,5,1)
+                self.enemy.health -= my_damage
+                print(self.enemy.name, 'lost', my_damage, 'HP and now has ', self.enemy.health)
+            if(attack_type == 'Leg'):
+                my_damage = random.randrange(5,10,1)
+                self.enemy.health -= my_damage
+                print(self.enemy.name, 'lost', my_damage, 'HP and now has ', self.enemy.health)
+            if(attack_type == 'Boulder'):
+                my_damage = random.randrange(15,20,1)
+                self.enemy.health -= my_damage
+                print(self.enemy.name, 'lost', my_damage, 'HP and now has ', self.enemy.health)
+            if(attack_type == 'Weapon'):
+                my_damage = 100
+                self.enemy.health -= my_damage
+                print(self.enemy.name, 'lost', my_damage, 'HP and now has ', self.enemy.health)
+            self.enemy.say_any('Never Surrender!')
+            print(self.name, ' attacks!')
+            enemy_damage = random.randrange(*self.enemy_damage)
+            self.character.health -= enemy_damage
+            print('You lost', enemy_damage, 'HP and now have', self.character.health)
+
             
