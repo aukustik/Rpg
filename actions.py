@@ -10,13 +10,15 @@ class MoveUp(Command):
     def run(self):
         future_pos = []
         future_pos += self.level.char_pos[0], self.level.char_pos[1]
-        if (future_pos[0] > 0):
+        if (future_pos[0] > 0 and self.level.map_main[future_pos[0] - 1][future_pos[1]].wall == False):
             self.level.map_main[future_pos[0] - 1][future_pos[1]].event(self.character)
             self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = Road(self.level)
             self.level.char_pos[0] -= 1
-            self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = '0'
+            self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = CharPosition(self.level)
         else:
             print('You shall not path!!!')
+        if (self.level.map_main[future_pos[0] - 1][future_pos[1]].wall == True):
+            self.level.map_main[future_pos[0] - 1][future_pos[1]].event(self.character)
 
 class MoveDown(Command):
     def __init__(self, level, character):
@@ -25,13 +27,16 @@ class MoveDown(Command):
     def run(self):
         future_pos = []
         future_pos += self.level.char_pos[0], self.level.char_pos[1]
-        if (future_pos[0] < self.level.size - 1):
+        if (future_pos[0] < self.level.size - 1 and self.level.map_main[future_pos[0] + 1][future_pos[1]].wall == False):
             self.level.map_main[future_pos[0] + 1][future_pos[1]].event(self.character)
             self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = Road(self.level)
             self.level.char_pos[0] += 1
-            self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = '0'
+            self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = CharPosition(self.level)
         else:
             print('You shall not path!!!')
+        if (self.level.map_main[future_pos[0] + 1][future_pos[1]].wall == True):
+            self.level.map_main[future_pos[0] + 1][future_pos[1]].event(self.character)
+
 class MoveLeft(Command):
     def __init__(self, level, character):
         self.level = level
@@ -39,13 +44,15 @@ class MoveLeft(Command):
     def run(self):
         future_pos = []
         future_pos += self.level.char_pos[0], self.level.char_pos[1]
-        if (future_pos[1] > 0):
+        if (future_pos[1] > 0 and self.level.map_main[future_pos[0]][future_pos[1] - 1].wall == False):
             self.level.map_main[future_pos[0]][future_pos[1] - 1].event(self.character)
             self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = Road(self.level)
             self.level.char_pos[1] -= 1
-            self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = '0'
+            self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = CharPosition(self.level)
         else:
             print('You shall not path!!!')
+        if (self.level.map_main[future_pos[0]][future_pos[1] - 1].wall == True):
+            self.level.map_main[future_pos[0]][future_pos[1] - 1].event(self.character)
 
 class MoveRight(Command):
     def __init__(self, level, character):
@@ -54,14 +61,15 @@ class MoveRight(Command):
     def run(self):
         future_pos = []
         future_pos += self.level.char_pos[0], self.level.char_pos[1]
-        future_pos[1] += 1
-        if (future_pos[1] < self.level.size):
+        if (future_pos[1] < self.level.size and self.level.map_main[future_pos[0]][future_pos[1] + 1].wall == False):
             self.level.map_main[future_pos[0]][future_pos[1] + 1].event(self.character)
             self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = Road(self.level)
             self.level.char_pos[1] += 1
-            self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = '0'
+            self.level.map_main[self.level.char_pos[0]][self.level.char_pos[1]] = CharPosition(self.level)
         else:
             print('You shall not path!!!')
+        if (self.level.map_main[future_pos[0]][future_pos[1] + 1].wall == True):
+            self.level.map_main[future_pos[0]][future_pos[1] + 1].event(self.character)
 
 class Equip(Command):
     def __init__(self, level, character):

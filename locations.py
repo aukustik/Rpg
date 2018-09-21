@@ -4,7 +4,10 @@ class Location:
     def __init__(self, level):
         self.wall = False 
         self.level = level
+
 class Road(Location):
+    def __init__(self, level):
+        self.wall = False
     
     def __str__(self):
         return '#'
@@ -14,19 +17,24 @@ class Road(Location):
         self.character.stamina -= 1
 
 class Wall(Location):
+    def __init__(self, level):
+        self.wall = True
+    
     def __str__(self):
         return 'W'
     
-    def event(self):
-        self.wall = True
+    def event(self, character):
+        print('This is Wall! Hello!')
 
 class Door(Location):
+    def __init__(self, level):
+        self.wall = True
+    
     def __str__(self):
         return '?'
 
     def event(self, character):
         self.character = character
-        self.wall = True
         for i in self.character.backpack.storage:
             if (i.item_id == 'Key'):
                 self.character.backpack.remove_item(i)
@@ -34,7 +42,7 @@ class Door(Location):
                 self.character.stamina - 1
                 print('Door is Opened!')
         if (self.wall == True):
-            print('You need Key.')
+            print('This door is closed, you need a Key.')
 
 class Box(Location):
     def __str__(self):
@@ -64,5 +72,13 @@ class Box(Location):
             print(i.info())
         print('_____________________')
 
-
+class CharPosition(Location):
+    def __str__(self):
+        return '0'
+    
+    def __init__(self, level):
+        self.wall = False
+    
+    def event(self, character):
+        character.say_any('So scary...')
             
