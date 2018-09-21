@@ -3,8 +3,9 @@ import time
 class MainChar:
     def __init__(self, nameChar):
         self.health = 100
+        self.stamina = 15
         self.max_health = 100
-        self.max_stamina = 40
+        self.max_stamina = 15
         self.name = nameChar
         self.exp = 0
         self.backpack = Storage(20)
@@ -51,6 +52,7 @@ class MainChar:
     def print_stats(self):
         print('HERO',self.name,'STATS')
         print('Heath Points:', self.health, '/',self.max_health)
+        print('Stamina:', self.stamina, '/', self.max_stamina)
         if (self.equipment['Helmet'] != None):
             print('Helmet:', self.equipment['Helmet'].item_id)
         if (self.equipment['Body'] != None):
@@ -92,6 +94,8 @@ class MainChar:
                 
             if (chose == 'exit'):
                 return False
+
+
 
 
 class Item:
