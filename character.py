@@ -20,6 +20,7 @@ class MainChar:
                 self.equipment[item.type] = item
                 if (item.type == 'Helmet'):
                     self.max_health += item.bonus_health
+                    self.health += item.bonus_health
                 if (item.type == 'Body'):
                     self.max_stamina += item.bonus_stamina
             else:
@@ -34,6 +35,7 @@ class MainChar:
         if (self.equipment[type] != None):
             if (type == 'Helmet'):
                 self.max_health -= int(self.equipment[type].bonus_health)
+                self.health -= int(self.equipment[type].bonus_health)
             if (type == 'Body'):
                 self.max_stamina -= int(self.equipment[type].bonus_stamina)
             self.equipment[type] = None
@@ -91,22 +93,6 @@ class MainChar:
             if (chose == 'exit'):
                 return False
 
-
-    
-    def move_down(self, char_pos, map_main):
-        map_main[char_pos[0]][char_pos[1]] = '|'
-        char_pos[0] += 1
-        map_main[char_pos[0]][char_pos[1]] = '0'
-
-    def move_left(self, char_pos, map_main):
-        map_main[char_pos[0]][char_pos[1]] = '-'
-        char_pos[1] -= 1
-        map_main[char_pos[0]][char_pos[1]] = '0'
-
-    def move_right(self, char_pos, map_main):
-        map_main[char_pos[0]][char_pos[1]] = '-'
-        char_pos[1] += 1
-        map_main[char_pos[0]][char_pos[1]] = '0'
 
 class Item:
     def __init__(self, name, size):
