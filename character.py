@@ -1,13 +1,38 @@
 import time
+from achievments import *
+class Observable:
+    def __init__(self):
+        self.observers = list()
+    
+    def notify_obs(self):
+        for i in self.observers:
+            i.notify()
+    
+    def add_observer(self, observer):
+        self.observers.append(observer)
+        
+    def remove_obs(self, observer):
+        self.observers.remove(observer)
 
-class MainChar:
+
+class Character(Observable):
     def __init__(self, nameChar):
-        self.health = 100
-        self.stamina = 15
-        self.max_health = 100
-        self.max_stamina = 15
+        super().__init__()
         self.name = nameChar
-        self.exp = 0
+    
+    def say_any(self, text):
+        message = text
+        print(self.name, 'says: ', end='')
+        for i in message:
+            print(i, end='')
+            time.sleep(0.03)
+        time.sleep(0.5)
+        print('\n')
+    
+class MainChar(Character):
+    def __init__(self, nameChar):
+        super().__init__(nameChar)
+        self.name = nameChar
         self.backpack = Storage(20)
         self.equipment = {
             'Helmet':None,
@@ -16,14 +41,27 @@ class MainChar:
             'Gloves':None,
             'Weapon':None
         }
+        self.stats = {
+            'Level': 0,
+            'Experience': 0,
+            'MaxHealth': 100,
+            'CurrentHealth': 100,
+            'Stamina': 15,
+            'CurrentStamina': 15,
+            'Defence': 0,
+            'MaxMana': 100,
+            'CurrentMana': 100
+        }
+    
     def equip_item(self, item):
             if(self.equipment[item.type] == None):
                 self.equipment[item.type] = item
                 if (item.type == 'Helmet'):
-                    self.max_health += item.bonus_health
-                    self.health += item.bonus_health
+                    self.stats['MaxHealth'] += item.bonus_health
+                    self.stats['CurrentHealth'] += item.bonus_health
                 if (item.type == 'Body'):
-                    self.max_stamina += item.bonus_stamina
+                    self.stats['Stamina'] += item.bonus_stamina
+                    self.stats['CurrentStamina'] += item.bonus_stamina
             else:
                 print('Unequip old', item.type,'and equip',item.item_id ,'?(yes/no):')
                 result = input()
@@ -32,13 +70,14 @@ class MainChar:
                     self.equip_item(item)
                 else:
                     return
+    
     def unequip_item(self, type):
         if (self.equipment[type] != None):
             if (type == 'Helmet'):
-                self.max_health -= int(self.equipment[type].bonus_health)
+                self.stats['MaxHealth'] -= int(self.equipment[type].bonus_health)
                 self.health -= int(self.equipment[type].bonus_health)
             if (type == 'Body'):
-                self.max_stamina -= int(self.equipment[type].bonus_stamina)
+                self.stats['Stamina'] -= int(self.equipment[type].bonus_stamina)
             self.equipment[type] = None
 
     def take_damage(self, damage):
@@ -51,8 +90,8 @@ class MainChar:
 
     def print_stats(self):
         print('HERO',self.name,'STATS')
-        print('Heath Points:', self.health, '/',self.max_health)
-        print('Stamina:', self.stamina, '/', self.max_stamina)
+        print('Heath Points:', self.stats['CurrentHealth'], '/',self.stats['MaxHealth'])
+        print('Stamina:', self.stats['CurrentStamina'], '/', self.stats['Stamina'])
         if (self.equipment['Helmet'] != None):
             print('Helmet:', self.equipment['Helmet'].item_id)
         if (self.equipment['Body'] != None):
@@ -65,16 +104,7 @@ class MainChar:
             print('Weapon', self.equipment['Weapon'].item_id)
     
     def health_checking(self):
-        return self.max_health + sum([item.bonus_health for item in self.equipment])
-        
-    def say_any(self, text):
-        message = text
-        print(self.name, 'says: ', end='')
-        for i in message:
-            print(i, end='')
-            time.sleep(0.03)
-        time.sleep(0.5)
-        print('\n')
+        return self.stats['MaxHealth'] + sum([item.bonus_health for item in self.equipment])
     
     def show_backpack(self):
         print('Backpack:')
@@ -95,8 +125,10 @@ class MainChar:
             if (chose == 'exit'):
                 return False
 
-
-
+    def stats_update(self):
+        print(self.stats)
+            
+            
 
 class Item:
     def __init__(self, name, size):
@@ -148,6 +180,7 @@ class BodyArmour(Item):
         return self.message
 
 class Storage:
+    
     def __init__(self, maxSize):
         self.size = maxSize
         self.storage = []

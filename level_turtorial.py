@@ -31,7 +31,7 @@ class LevelTurtorial:
         self.box_coords = [self.size//2,self.size//2]
         if(self.box_coords == self.char_pos):
             self.chest()
-        self.map_main[self.box_coords[0]][self.box_coords[1]] = Box(self)
+        self.map_main[self.box_coords[0]][self.box_coords[1]] = Box(self, self.treasure_box)
         self.map_main[self.box_coords[0]-1][self.box_coords[1]] = Door(self)
         self.map_main[self.box_coords[0]][self.box_coords[1]-1] = Door(self)
         self.map_main[self.box_coords[0]+1][self.box_coords[1]] = Door(self)
@@ -46,7 +46,7 @@ class LevelTurtorial:
         item_key = Keys('Key', 1)
         self.key_chest.add_item(item_key)
         self.key_coords = [0, self.size - 1]
-        self.map_main[self.key_coords[0]][self.key_coords[1]] = KeyBox(self)
+        self.map_main[self.key_coords[0]][self.key_coords[1]] = Box(self, self.key_chest)
         self.map_main[self.key_coords[0]][self.key_coords[1] - 1] = Wall(self)
         self.map_main[self.key_coords[0] + 1][self.key_coords[1] - 1] = Wall(self)
         self.map_main[self.key_coords[0] + 1][self.key_coords[1]] = Enemy(self, 'Ogre, The Defender of Key')
@@ -72,9 +72,14 @@ class LevelTurtorial:
         # self.turtorial_npc.say_any('U are 0: ')
         self.map_output(map_turt)
         self.turtorial_npc.say_any('U can move on X, let\'s begin!')
+        character.stats_update()
         while(True):
             direction = input()
-            action = self.actions[direction]
-            action.run()
+            try:
+                action = self.actions[direction]
+                action.run()
+            except KeyError:
+                print('Unknown command.')
+                pass
             self.map_output(map_turt)
 
