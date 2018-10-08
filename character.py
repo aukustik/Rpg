@@ -32,6 +32,10 @@ class Character(Observable):
 class MainChar(Character):
     def __init__(self, nameChar):
         super().__init__(nameChar)
+        self.stunned = {
+            'state': False,
+            'duration': 0
+        }
         self.name = nameChar
         self.backpack = Storage(20)
         self.equipment = {
@@ -50,7 +54,8 @@ class MainChar(Character):
             'CurrentStamina': 15,
             'Defence': 0,
             'MaxMana': 100,
-            'CurrentMana': 100
+            'CurrentMana': 100,
+            'MagicPower': 100
         }
     
     def equip_item(self, item):
@@ -127,7 +132,8 @@ class MainChar(Character):
 
     def stats_update(self):
         print(self.stats)
-            
+
+
             
 
 class Item:
@@ -197,3 +203,22 @@ class Storage:
     def use_item(self, item):
         print('Using item', item.item_id)
         self.storage.remove(item)
+
+class CharacterHealth:
+    def __init__(self):
+        self.maximum_health = 100
+        self.current_health = 100
+    
+    def get(self):
+        return self.current_health
+
+    def set(self, value):
+        self.current_health = value
+        if (self.current_health > self.maximum_health):
+            self.current_health = self.maximum_health
+
+    def set_maximum_health(self, value):
+        self.maximum_health += value
+
+    
+
