@@ -1,5 +1,7 @@
 import time
 from achievments import *
+from equipment import CharacterEquip
+from characterstats import Stats
 class Observable:
     def __init__(self):
         self.observers = list()
@@ -38,52 +40,8 @@ class MainChar(Character):
         }
         self.name = nameChar
         self.backpack = Storage(20)
-        self.equipment = {
-            'Helmet':None,
-            'Body':None,
-            'Boots':None,
-            'Gloves':None,
-            'Weapon':None
-        }
-        self.stats = {
-            'Level': 0,
-            'Experience': 0,
-            'MaxHealth': 100,
-            'CurrentHealth': 100,
-            'Stamina': 15,
-            'CurrentStamina': 15,
-            'Defence': 0,
-            'MaxMana': 100,
-            'CurrentMana': 100,
-            'MagicPower': 100
-        }
-    
-    def equip_item(self, item):
-            if(self.equipment[item.type] == None):
-                self.equipment[item.type] = item
-                if (item.type == 'Helmet'):
-                    self.stats['MaxHealth'] += item.bonus_health
-                    self.stats['CurrentHealth'] += item.bonus_health
-                if (item.type == 'Body'):
-                    self.stats['Stamina'] += item.bonus_stamina
-                    self.stats['CurrentStamina'] += item.bonus_stamina
-            else:
-                print('Unequip old', item.type,'and equip',item.item_id ,'?(yes/no):')
-                result = input()
-                if(result=='yes'):
-                    self.unequip_item(item.type)
-                    self.equip_item(item)
-                else:
-                    return
-    
-    def unequip_item(self, type):
-        if (self.equipment[type] != None):
-            if (type == 'Helmet'):
-                self.stats['MaxHealth'] -= int(self.equipment[type].bonus_health)
-                self.health -= int(self.equipment[type].bonus_health)
-            if (type == 'Body'):
-                self.stats['Stamina'] -= int(self.equipment[type].bonus_stamina)
-            self.equipment[type] = None
+        self.equipment = CharacterEquip()
+        self.stats = Stats(100, 100, 15)
 
     def take_damage(self, damage):
         self.health = self.health - damage
@@ -95,21 +53,25 @@ class MainChar(Character):
 
     def print_stats(self):
         print('HERO',self.name,'STATS')
-        print('Heath Points:', self.stats['CurrentHealth'], '/',self.stats['MaxHealth'])
-        print('Stamina:', self.stats['CurrentStamina'], '/', self.stats['Stamina'])
-        if (self.equipment['Helmet'] != None):
-            print('Helmet:', self.equipment['Helmet'].item_id)
-        if (self.equipment['Body'] != None):
-            print('Body Armour:', self.equipment['Body'].item_id)
-        if (self.equipment['Boots'] != None):
-            print('Boots:', self.equipment['Boots'].item_id)
-        if (self.equipment['Gloves'] != None):
-            print('Gloves:', self.equipment['Gloves'].item_id)
-        if (self.equipment['Weapon'] != None):
-            print('Weapon', self.equipment['Weapon'].item_id)
+        print('Heath Points:', self.stats.health_attr.get(), '/',self.stats.health_attr.get_max())
+        print('Mana Points:', self.stats.mana_attr.get(), '/', self.stats.mana_attr.get_max())
+        print('Stamina:', self.stats.stamina_attr.get(), '/', self.stats.stamina_attr.get_max())
+        
+        if (self.equipment.slots['Helmet'].state() != 'Empty'):
+            print('Helmet:', self.equipment.slots['Helmet'].slot.item_id)
+        if (self.equipment.slots['Body'].state() != 'Empty'):
+            print('Body Armour:', self.equipment.slots['Body'].slot.item_id)
+        if (self.equipment.slots['Boots'].state() != 'Empty'):
+            print('Boots:', self.equipment.slots['Boots'].slot.item_id)
+        if (self.equipment.slots['Gloves'].state() != 'Empty'):
+            print('Gloves:', self.equipment.slots['Gloves'].slot.item_id)
+        if (self.equipment.slots['First Weapon'].state() != 'Empty'):
+            print('First Weapon', self.equipment.slots['First Weapon'].slot.item_id)
+        if (self.equipment.slots['Pants'].state() != 'Empty'):
+            print('Pants', self.equipment.slots['Pants'].slot.item_id)
     
     def health_checking(self):
-        return self.stats['MaxHealth'] + sum([item.bonus_health for item in self.equipment])
+        return self.stats.health_attr.get_max + sum([item.bonus_health for item in self.equipment.slots])
     
     def show_backpack(self):
         print('Backpack:')
@@ -124,14 +86,14 @@ class MainChar(Character):
                 chose_2 = input()
                 for i in self.backpack.storage:
                     if (chose_2 == i.item_id):
-                        self.equip_item(i)
+                        self.equipment.equip(i)
                         self.backpack.remove_item(i)
                 
             if (chose == 'exit'):
                 return False
 
     def stats_update(self):
-        print(self.stats)
+        print(self.print_stats())
 
 
             
@@ -203,22 +165,6 @@ class Storage:
     def use_item(self, item):
         print('Using item', item.item_id)
         self.storage.remove(item)
-
-class CharacterHealth:
-    def __init__(self):
-        self.maximum_health = 100
-        self.current_health = 100
-    
-    def get(self):
-        return self.current_health
-
-    def set(self, value):
-        self.current_health = value
-        if (self.current_health > self.maximum_health):
-            self.current_health = self.maximum_health
-
-    def set_maximum_health(self, value):
-        self.maximum_health += value
 
     
 

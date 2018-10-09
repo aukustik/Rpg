@@ -1,4 +1,4 @@
-from character import *
+from character import MainChar
 import random
 class Location:
     def __init__(self, level):
@@ -14,7 +14,7 @@ class Road(Location):
 
     def event(self, character):
         self.character = character
-        self.character.stats['CurrentStamina'] -= 1
+        self.character.stats.stamina_attr.set(-1)
 
 class Wall(Location):
     def __init__(self, level):
@@ -111,30 +111,29 @@ class Enemy(Location):
             my_damage = 0
             if(attack_type == 'Hand'):
                 my_damage = random.randrange(0,5,1)
-                self.enemy.stats['CurrentHealth'] -= my_damage
-                print(self.enemy.name, 'lost', my_damage, 'HP and now has ', self.enemy.stats['CurrentHealth'])
+                self.enemy.stats.health_attr.set(-my_damage)
+                print(self.enemy.name, 'lost', my_damage, 'HP and now has ', self.enemy.stats.health_attr.get())
             if(attack_type == 'Leg'):
                 my_damage = random.randrange(5,10,1)
-                self.enemy.stats['CurrentHealth'] -= my_damage
-                print(self.enemy.name, 'lost', my_damage, 'HP and now has ', self.enemy.stats['CurrentHealth'])
+                self.enemy.stats.health_attr.set(-my_damage)
+                print(self.enemy.name, 'lost', my_damage, 'HP and now has ', self.enemy.stats.health_attr.get())
             if(attack_type == 'Boulder'):
                 my_damage = random.randrange(15,20,1)
-                self.enemy.stats['CurrentHealth'] -= my_damage
-                print(self.enemy.name, 'lost', my_damage, 'HP and now has ', self.enemy.stats['CurrentHealth'])
+                self.enemy.stats.health_attr.set(-my_damage)
+                print(self.enemy.name, 'lost', my_damage, 'HP and now has ', self.enemy.stats.health_attr.get())
             if(attack_type == 'Weapon'):
                 my_damage = 100
-                self.enemy.stats['CurrentHealth'] -= my_damage
-                print(self.enemy.name, 'lost', my_damage, 'HP and now has ', self.enemy.stats['CurrentHealth'])
-            if (self.enemy.stats['CurrentHealth'] <= 0):
+                self.enemy.stats.health_attr.set(-my_damage)
+                print(self.enemy.name, 'lost', my_damage, 'HP and now has ', self.enemy.stats.health_attr.get())
                 print(self.enemy.name,'is Dead')
                 self.character.notify_obs()
                 return False
             self.enemy.say_any('Never Surrender!')
             print(self.name, ' attacks!')
             enemy_damage = random.randrange(*self.enemy_damage)
-            self.character.stats['CurrentHealth'] -= enemy_damage
-            print('You lost', enemy_damage, 'HP and now have', self.character.stats['CurrentHealth'])
-            if (self.character.stats['CurrentHealth'] <= 0):
+            self.character.stats.health_attr.set(-enemy_damage)
+            print('You lost', enemy_damage, 'HP and now have', self.character.stats.health_attr.get())
+            if (self.character.stats.health_attr.get() <= 0):
                 print('You Died...')
                 break
 
