@@ -1,4 +1,5 @@
 from locations import *
+import os
 class Command:
     def run(self):
         raise NotImplementedError
@@ -108,4 +109,4 @@ class BackpackOutput(Command):
 class Exit(Command):
     
     def run(self):
-        raise SystemExit(1)
+        os._exit(0)

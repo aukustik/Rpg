@@ -22,7 +22,7 @@ class LevelTurtorial:
     
     def chest(self):
         self.treasure_box = Storage(20)
-        item_helmet = Helmets('Vedro',2)
+        item_helmet = Helmet('Vedro',2)
         item_body = BodyArmour('Manatki Bomzha',2)
         item_body.set_stamina(random.randrange(3,7,1))
         item_helmet.set_health(random.randrange(8,13,1))
@@ -43,7 +43,7 @@ class LevelTurtorial:
     
     def key_box(self):
         self.key_chest = Storage(1)
-        item_key = Keys('Key', 1)
+        item_key = Key('Key', 1)
         self.key_chest.add_item(item_key)
         self.key_coords = [0, self.size - 1]
         self.map_main[self.key_coords[0]][self.key_coords[1]] = Box(self, self.key_chest)

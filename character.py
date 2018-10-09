@@ -1,6 +1,6 @@
 import time
 import random
-from achievments import *
+from achievments import FirstKill
 from equipment import CharacterEquip
 from characterstats import Stats
 class Observable:
@@ -110,7 +110,7 @@ class HealingPotion(Item):
     def using(self, char):
         char.healing(20)
 
-class Helmets(Item):
+class Helmet(Item):
     type = 'Helmet'
     bonus_health = 0
     
@@ -124,7 +124,7 @@ class Helmets(Item):
         self.message = self.type + ': ' + self.item_id + ' (' + 'Bonus HP:' + str(self.bonus_health) + ')'
         return self.message
 
-class Keys(Item):
+class Key(Item):
     type = 'Key'
 
     def info(self):
@@ -161,7 +161,7 @@ class ItemBonus:
         
         if (item_type == 'First Weapon'):
             self.bonuses['Defence'] = 0
-
+    #Необходимо добавить эти бонусы в Item, и сделать def refresh_stats()
 
 class Storage:
     
