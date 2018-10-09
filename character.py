@@ -1,4 +1,5 @@
 import time
+import random
 from achievments import *
 from equipment import CharacterEquip
 from characterstats import Stats
@@ -92,9 +93,6 @@ class MainChar(Character):
             if (chose == 'exit'):
                 return False
 
-    def stats_update(self):
-        print(self.print_stats())
-
 
             
 
@@ -146,6 +144,24 @@ class BodyArmour(Item):
     def info(self):
         self.message = self.type + ': ' + self.item_id + ' (' + 'Bonus Stamina:' + str(self.bonus_stamina) + ')'
         return self.message
+
+
+class ItemBonus:
+    def __init__(self, type, charlevel):
+        item_type = type
+        self.bonuses = {
+            'MaxHealth': random.randrange(0, charlevel+10, 1),
+            'MaxMana': random.randrange(0, charlevel+10, 1),
+            'MaxStamina': random.randrange(0, charlevel+5, 1),
+            'Damage': random.randrange(charlevel+10, charlevel+20, 1),
+            'Defence': random.randrange(charlevel+5, charlevel+10, 1)
+        }
+        if (item_type == 'Helmet' or item_type == 'Body' or item_type == 'Boots' or item_type == 'Pants' or item_type == 'Gloves'):
+            self.bonuses['Damage'] = 0
+        
+        if (item_type == 'First Weapon'):
+            self.bonuses['Defence'] = 0
+
 
 class Storage:
     

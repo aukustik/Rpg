@@ -72,7 +72,7 @@ class LevelTurtorial:
         # self.turtorial_npc.say_any('U are 0: ')
         self.map_output(map_turt)
         self.turtorial_npc.say_any('U can move on X, let\'s begin!')
-        character.stats_update()
+        character.print_stats()
         while(True):
             direction = input()
             try:

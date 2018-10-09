@@ -39,7 +39,7 @@ class Door(Location):
             if (i.item_id == 'Key'):
                 self.character.backpack.remove_item(i)
                 self.wall = False
-                self.character.stats['CurrentStamina'] - 1
+                self.character.stats.stamina_attr.set(-1)
                 print('Door is Opened!')
         if (self.wall == True):
             print('This door is closed, you need a Key.')
