@@ -44,14 +44,6 @@ class MainChar(Character):
         self.equipment = CharacterEquip()
         self.stats = Stats(100, 100, 15)
 
-    def take_damage(self, damage):
-        self.health = self.health - damage
-        print(self.name, 'lost', damage, 'hp')
-
-    def healing(self, heal):
-        self.health = self.health + heal
-        print(self.name,'healed',heal, 'hp')
-
     def print_stats(self):
         print('HERO',self.name,'STATS')
         print('Heath Points:', self.stats.health_attr.get(), '/',self.stats.health_attr.get_max())
@@ -73,7 +65,8 @@ class MainChar(Character):
     
     def health_checking(self):
         return self.stats.health_attr.get_max + sum([item.bonus_health for item in self.equipment.slots])
-    
+
+
     def show_backpack(self):
         print('Backpack:')
         for i in self.backpack.storage:
@@ -139,6 +132,34 @@ class BodyArmour(Item):
         self.type = 'Body'
         self.bonuses = ItemBonus(self.type, 1)
 
+class Pants(Item):
+    
+    def __init__(self, name):
+        super().__init__(name)
+        self.type = 'Pants'
+        self.bonuses = ItemBonus(self.type, 1)
+
+class Boots(Item):
+    
+    def __init__(self, name):
+        super().__init__(name)
+        self.type = 'Boots'
+        self.bonuses = ItemBonus(self.type, 1)
+
+class Gloves(Item):
+    
+    def __init__(self, name):
+        super().__init__(name)
+        self.type = 'Gloves'
+        self.bonuses = ItemBonus(self.type, 1)
+
+class Weapon(Item):
+    
+    def __init__(self, name):
+        super().__init__(name)
+        self.type = 'First Weapon'
+        self.bonuses = ItemBonus(self.type, 1)
+
 class ItemBonus:
     def __init__(self, type, charlevel):
         item_type = type
@@ -165,8 +186,8 @@ class ItemBonus:
         for key in self.bonuses.keys():
             if (self.bonuses[key] != 0):
                 bonus_attributes += str(key) + ' = ' + str(self.bonuses[key]) + ', '
-        return bonus_attributes
-    #Необходимо добавить эти бонусы в Item, и сделать def refresh_stats()
+        return bonus_attributes.rstrip(', ')
+    #сделать def refresh_stats()
 
 class Storage:
     

@@ -66,5 +66,18 @@ class CharacterEquip:
     def equip(self, item):
         self.slots[item.type].equip(item)
 
+    def refresh_bonuses(self):
+        bonuses = {
+            'Bonus Health': 0,
+            'Bonus Mana': 0,
+            'Bonus Stamina': 0,
+            'Defence':0
+        }
+        for i in self.slots.values():
+            bonuses['Bonus Health'] += i.bonuses['MaxHealth']
+            bonuses['Bonus Mana'] += i.bonuses['MaxMana']
+            bonuses['Defence'] += i.bonuses['Defence']
+            bonuses['Bonus Stamina'] += i.bonuses['MaxStamina']
+        return bonuses
     
-
+    
