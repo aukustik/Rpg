@@ -105,6 +105,9 @@ class BackpackOutput(Command):
     
     def run(self):
         self.character.show_backpack()
+class Debugging(Command):
+    def run(self):
+        pass
 
 class Exit(Command):
     

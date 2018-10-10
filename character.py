@@ -97,54 +97,47 @@ class MainChar(Character):
             
 
 class Item:
-    def __init__(self, name, size):
+    def __init__(self, name):
         self.item_id = name
-        self.itemSize = size
         self.quantity = 1
-    
+        self.item_size = 1
+        self.type = 'Other'
+        self.bonuses = ItemBonus(self.type, 1)
+    def generate(self):
+        raise NotImplementedError
+
     def __str__(self):
         return self.item_id
+    
+    def info(self):
+        self.message = self.type + ': ' + self.item_id + ' (' + self.bonuses.about_item() + ')'
+        return self.message
 
 class HealingPotion(Item):
-    type = 'Potion'
-    def using(self, char):
-        char.healing(20)
+    def __init__(self, name):
+        super().__init__(name)
+        self.type = 'Potion'
+        self.bonuses = ItemBonus(self.type, 1)
 
 class Helmet(Item):
-    type = 'Helmet'
-    bonus_health = 0
-    
-    def set_health(self, value):
-        self.bonus_health = value
-
-    def get_health(self):
-        return self.bonus_health
-
-    def info(self):
-        self.message = self.type + ': ' + self.item_id + ' (' + 'Bonus HP:' + str(self.bonus_health) + ')'
-        return self.message
+    def __init__(self, name):
+        super().__init__(name)
+        self.type = 'Helmet'
+        self.bonuses = ItemBonus(self.type, 1)
 
 class Key(Item):
-    type = 'Key'
 
-    def info(self):
-        self.message = 'Item:' + self.type
-        return self.message
+    def __init__(self, name):
+        super().__init__(name)
+        self.type = 'Key'
+        self.bonuses = ItemBonus(self.type, 1)
 
 class BodyArmour(Item):
-    type = 'Body'
-    bonus_stamina = 0
     
-    def set_stamina(self, value):
-        self.bonus_stamina = value
-    
-    def get_stamina(self):
-        return self.bonus_stamina
-    
-    def info(self):
-        self.message = self.type + ': ' + self.item_id + ' (' + 'Bonus Stamina:' + str(self.bonus_stamina) + ')'
-        return self.message
-
+    def __init__(self, name):
+        super().__init__(name)
+        self.type = 'Body'
+        self.bonuses = ItemBonus(self.type, 1)
 
 class ItemBonus:
     def __init__(self, type, charlevel):
@@ -161,6 +154,18 @@ class ItemBonus:
         
         if (item_type == 'First Weapon'):
             self.bonuses['Defence'] = 0
+        
+        if (item_type == 'Key' or item_type == 'Potion'):
+            self.bonuses = {
+                'Key': 'TREASURE KEY'
+            }
+        
+    def about_item(self):
+        bonus_attributes = 'Info:'
+        for key in self.bonuses.keys():
+            if (self.bonuses[key] != 0):
+                bonus_attributes += str(key) + ' = ' + str(self.bonuses[key]) + ', '
+        return bonus_attributes
     #Необходимо добавить эти бонусы в Item, и сделать def refresh_stats()
 
 class Storage:
@@ -170,7 +175,7 @@ class Storage:
         self.storage = []
     
     def add_item(self, item):
-        if(len(self.storage) + item.itemSize > self.size):
+        if(len(self.storage) + item.item_size > self.size):
             print('Not enough space')
         else:
             self.storage.append(item)

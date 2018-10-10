@@ -22,10 +22,8 @@ class LevelTurtorial:
     
     def chest(self):
         self.treasure_box = Storage(20)
-        item_helmet = Helmet('Vedro',2)
-        item_body = BodyArmour('Manatki Bomzha',2)
-        item_body.set_stamina(random.randrange(3,7,1))
-        item_helmet.set_health(random.randrange(8,13,1))
+        item_helmet = Helmet('Vedro')
+        item_body = BodyArmour('Manatki Bomzha')
         self.treasure_box.add_item(item_helmet)
         self.treasure_box.add_item(item_body)
         self.box_coords = [self.size//2,self.size//2]
@@ -43,14 +41,14 @@ class LevelTurtorial:
     
     def key_box(self):
         self.key_chest = Storage(1)
-        item_key = Key('Key', 1)
+        item_key = Key('Key')
         self.key_chest.add_item(item_key)
         self.key_coords = [0, self.size - 1]
         self.map_main[self.key_coords[0]][self.key_coords[1]] = Box(self, self.key_chest)
         self.map_main[self.key_coords[0]][self.key_coords[1] - 1] = Wall(self)
         self.map_main[self.key_coords[0] + 1][self.key_coords[1] - 1] = Wall(self)
         self.map_main[self.key_coords[0] + 1][self.key_coords[1]] = Enemy(self, 'Ogre, The Defender of Key')
-        print(self.key_chest.storage[0])
+        print(str(self.key_chest.storage[0]))
 
     def turtorial(self, character):
         map_turt = self.map_creation()
