@@ -86,7 +86,7 @@ class OpenChest(Command):
         self.level = level
     
     def run(self):
-        if (self.level.on_box == True):
+        if self.level.on_box:
             self.level.in_box(self.character)
         else:
             print('Nope.')

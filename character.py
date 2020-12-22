@@ -42,7 +42,10 @@ class MainChar(Character):
         self.name = nameChar
         self.backpack = Storage(20)
         self.equipment = CharacterEquip()
-        self.stats = Stats(100, 100, 15)
+        self.base_health = 100
+        self.base_mana = 100
+        self.base_stamina = 15
+        self.stats = Stats(self.base_health, self.base_mana, self.base_stamina)
 
     def print_stats(self):
         print('HERO',self.name,'STATS')
@@ -85,7 +88,7 @@ class MainChar(Character):
                 
             if (chose == 'exit'):
                 return False
-
+        
 
             
 
@@ -187,7 +190,8 @@ class ItemBonus:
             if (self.bonuses[key] != 0):
                 bonus_attributes += str(key) + ' = ' + str(self.bonuses[key]) + ', '
         return bonus_attributes.rstrip(', ')
-    #сделать def refresh_stats()
+
+    #TODO def refresh_stats()
 
 class Storage:
     
